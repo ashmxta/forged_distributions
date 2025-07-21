@@ -1,6 +1,6 @@
 #!/bin/bash
 # Iterate runs from XX to XX
-for run in {2..10}
+for run in {1..3}
 do
     for i in {0..40}
     do
