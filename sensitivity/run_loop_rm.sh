@@ -14,13 +14,13 @@ fi
 read -r -a removed <<< "$(< "$REMOVED_FILE")"
 echo "Loaded ${#removed[@]} points to remove."
 
-for run in {1..3}; do
+for run in {1..1}; do
   for i in {0..40}; do
     # fractional stage 0.000 … 1.000
     stage=$(echo "scale=3; $i / 40" | bc)
 
     echo "Starting run ${run}, stage ${stage} (dropping ${#removed[@]} points)"
-    python compute_sensitivity_rm_list.py \
+    python3 compute_sensitivity_rm_list.py \
       --stage "$stage" \
       --save-name "ckpt${run}" \
       --res-name "res${run}" \

@@ -119,8 +119,12 @@ def main():
     # prepare results directory
     if not os.path.exists("res"):
         os.mkdir("res")
-    res_dir = f"res/{args.res_name}.csv"
-    temp_res_dir = res_dir.replace("res/", "res/temp_")
+    out_dir = "/h/321/ashmita/forged_distributions/sensitivity/res"
+    os.makedirs(out_dir, exist_ok=True)
+
+    res_dir      = os.path.join(out_dir, f"{args.res_name}.csv")
+    temp_res_dir = os.path.join(out_dir, f"temp_{args.res_name}.csv")
+    print(f"Writing results to {res_dir}")
     if os.path.exists(temp_res_dir):
         os.remove(temp_res_dir)
     print(f"path to result file: {res_dir}")
