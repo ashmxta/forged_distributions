@@ -7,7 +7,6 @@ REMOVED_FILE="/h/321/ashmita/forged_distributions/sensitivity/compo_res/removed_
 
 if [[ ! -f "$REMOVED_FILE" ]]; then
   echo "ERROR: removed-points file not found at $REMOVED_FILE" >&2
-  exit 1
 fi
 
 # read into a bash array

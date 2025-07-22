@@ -84,11 +84,8 @@ def main():
 
     args = parser.parse_args()
     rng = np.random.default_rng(args.seed)
-
-    # always a list (possibly empty)
-    remove_points = args.remove_points
-    point_to_do = list(args.points)
-
+    remove_points  = args.remove_points
+    point_to_do    = np.array(args.points, dtype=int)
     # instantiate training object
     train_fn = train.train_fn(
         args.lr,
@@ -163,8 +160,11 @@ def main():
             temp_df = temp_df[temp_df['type'] == args.stage]
         if temp_df.shape[0] != 0:
             done = temp_df["point"].unique()
-            point_to_do = list(set(point_to_do) - set(done))
-            print(f"found {len(done)} done, {len(point_to_do)} to analyze")
+            # keep everything except done, as an ndarray
+            point_to_do = np.setdiff1d(point_to_do, done)
+            print(f"found {done.shape[0]} done, {point_to_do.shape[0]} to analyze")
+            
+
         else:
             print(f"{len(point_to_do)} points to analyze")
     else:
@@ -244,3 +244,5 @@ def main():
         df.to_csv(temp_res_dir, index=False)
         os.replace(temp_res_dir, res_dir)
 
+if __name__ == "__main__":
+    main()
