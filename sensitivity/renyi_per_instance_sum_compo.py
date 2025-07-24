@@ -77,9 +77,9 @@ df = df.rename(columns={feature: "Privacy cost"})
 # print(df)
 
 #File saving
-os.makedirs("compo_res", exist_ok=True)
+os.makedirs("compo_res_rm100", exist_ok=True)
 input_filename = os.path.basename(res_file)
-output_filename = input_filename.replace("res", "compo_res")
-output_path = os.path.join("compo_res", output_filename)
+output_filename = input_filename.replace("res_rm100", "compo_res_rm100")
+output_path = os.path.join("compo_res_rm100", output_filename)
 df.to_csv(output_path, index=False)
 print(f"Saved per-step privacy costs to: {output_path}")

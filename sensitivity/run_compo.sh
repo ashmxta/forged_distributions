@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-echo "Starting composition calculation on res_concat.csv..."
+echo "Starting composition calculation"
 
-python3 renyi_per_instance_sum_compo.py "./res/res_concat.csv"
+python3 renyi_per_instance_sum_compo.py "./res_rm100/res_concat_rm.csv"
 
 echo "Composition calculation completed."
 
