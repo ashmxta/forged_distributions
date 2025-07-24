@@ -84,8 +84,14 @@ def main():
 
     args = parser.parse_args()
     rng = np.random.default_rng(args.seed)
-    remove_points  = args.remove_points
-    point_to_do    = np.array(args.points, dtype=int)
+    remove_points = set(args.remove_points)  # use set for faster lookup
+    point_to_do = np.array(
+        [p for p in args.points if p not in remove_points],
+        dtype=int
+    )
+
+    print(f"Filtered {len(args.points) - len(point_to_do)} points (from {len(args.points)} total) due to --remove-points.")
+
     # instantiate training object
     train_fn = train.train_fn(
         args.lr,
@@ -114,9 +120,9 @@ def main():
     all_indices = np.arange(trainset_size)
 
     # prepare results directory
-    if not os.path.exists("res_rm"):
-        os.mkdir("res_rm")
-    out_dir = "/h/321/ashmita/forged_distributions/sensitivity/res_rm"
+    if not os.path.exists("res_rm100"):
+        os.mkdir("res_rm100")
+    out_dir = "/h/321/ashmita/forged_distributions/sensitivity/res_rm100"
     os.makedirs(out_dir, exist_ok=True)
 
     res_dir      = os.path.join(out_dir, f"{args.res_name}.csv")
@@ -266,54 +272,53 @@ def main():
             else pd.DataFrame()
         )
         # build a full DataFrame row matching the no‐remove schema + our extra field
-        new_df = pd.DataFrame({
-            f"distance ({args.reduction})": dist,
-            "step":                   step,
-            "real batch size":        len(point_to_do),
-            "p":                      p,
-            "point":                  point_to_do,
-            "sigma":                  train_fn.sigma,
-            "correct":                corr,
-            "accuracy":               accuracy,
-            "type":                   args.stage,
+        new_df = pd.DataFrame([
+            {
+                f"distance ({args.reduction})": d,
+                "step": step,
+                "real batch size": len(point_to_do),
+                "p": p,
+                "point": int(idx),
+                "sigma": train_fn.sigma,
+                "correct": int(c),
+                "accuracy": accuracy,
+                "type": args.stage,
 
-            # — all original parameters —
-            "points":                 args.points,
-            "batch_size":             args.batch_size,
-            "num_iters":              args.num_iters,
-            "alpha":                  args.alpha,
-            "num_batches":            args.num_batches,
-            "lr":                     args.lr,
-            "cn":                     args.cn,
-            "dataset":                args.dataset,
-            "dec_lr":                 args.dec_lr,
-            "dp":                     args.dp,
-            "eps":                    args.eps,
-            "optimizer":              args.optimizer,
-            "model":                  args.model,
-            "norm_type":              args.norm_type,
-            "save_freq":              args.save_freq,
-            "save_name":              args.save_name,
-            "res_name":               args.res_name,
-            "gamma":                  args.gamma,
-            "id":                     args.id,
-            "seed":                   args.seed,
-            "overwrite":              args.overwrite,
-            "poisson_train":          args.poisson_train,
-            "stage":                  args.stage,
-            "reduction":              args.reduction,
-            "exp":                    args.exp,
-            "less_point":             0,
-
-            # — our new field —
-            "remove_points_count":    len(remove_points),
-        })
+                # --- all original parameters ---
+                "batch_size": args.batch_size,
+                "num_iters": args.num_iters,
+                "alpha": args.alpha,
+                "num_batches": args.num_batches,
+                "lr": args.lr,
+                "cn": args.cn,
+                "dataset": args.dataset,
+                "dec_lr": args.dec_lr,
+                "dp": args.dp,
+                "eps": args.eps,
+                "optimizer": args.optimizer,
+                "model": args.model,
+                "norm_type": args.norm_type,
+                "save_freq": args.save_freq,
+                "save_name": args.save_name,
+                "res_name": args.res_name,
+                "gamma": args.gamma,
+                "id": args.id,
+                "seed": args.seed,
+                "overwrite": args.overwrite,
+                "poisson_train": args.poisson_train,
+                "stage": args.stage,
+                "reduction": args.reduction,
+                "exp": args.exp,
+                "less_point": 0,
+                "remove_points_count": len(remove_points),
+            }
+            for idx, d, c in zip(point_to_do, dist, corr)
+        ])
 
         # append & write
         df = pd.concat([df, new_df], ignore_index=True)
         df.to_csv(temp_res_dir, index=False)
         os.replace(temp_res_dir, res_dir)
-
 
 if __name__ == "__main__":
     main()
