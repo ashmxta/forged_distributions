@@ -114,9 +114,9 @@ def main():
     all_indices = np.arange(trainset_size)
 
     # prepare results directory
-    if not os.path.exists("res"):
-        os.mkdir("res")
-    out_dir = "/h/321/ashmita/forged_distributions/sensitivity/res"
+    if not os.path.exists("res_rm"):
+        os.mkdir("res_rm")
+    out_dir = "/h/321/ashmita/forged_distributions/sensitivity/res_rm"
     os.makedirs(out_dir, exist_ok=True)
 
     res_dir      = os.path.join(out_dir, f"{args.res_name}.csv")
@@ -172,7 +172,7 @@ def main():
         if args.overwrite and os.path.exists(res_dir):
             os.remove(res_dir)
 
-    if not point_to_do:
+    if point_to_do.size == 0:  # or use len(point_to_do) == 0
         print("no points left, use --overwrite 1 to re-run")
         return
 
@@ -202,18 +202,54 @@ def main():
                         else pd.read_csv(res_dir) if os.path.exists(res_dir)
                         else pd.DataFrame()
                     )
-                    df = pd.concat([df, pd.DataFrame({
+                    # build a single‐row record, only with scalars or same‐length arrays
+
+                    # build a single‐row record matching the no‐remove schema + extra
+                    record = {
                         f"distance ({args.reduction})": dist,
-                        "step": step,
-                        "p": p,
-                        "batch": b,
-                        "point": idx,
-                        "sigma": train_fn.sigma,
-                        "accuracy": accuracy,
-                        "type": args.stage,
-                        **vars(args)
-                    })])
+                        "step":                step,
+                        "p":                   p,
+                        "batch":               b,
+                        "point":               idx,
+                        "sigma":               train_fn.sigma,
+                        "accuracy":            accuracy,
+                        "type":                args.stage,
+
+                        # — all original parameters —
+                        "points":              args.points,
+                        "batch_size":          args.batch_size,
+                        "num_iters":           args.num_iters,
+                        "alpha":               args.alpha,
+                        "num_batches":         args.num_batches,
+                        "lr":                  args.lr,
+                        "cn":                  args.cn,
+                        "dataset":             args.dataset,
+                        "dec_lr":              args.dec_lr,
+                        "dp":                  args.dp,
+                        "eps":                 args.eps,
+                        "optimizer":           args.optimizer,
+                        "model":               args.model,
+                        "norm_type":           args.norm_type,
+                        "save_freq":           args.save_freq,
+                        "save_name":           args.save_name,
+                        "res_name":            args.res_name,
+                        "gamma":               args.gamma,
+                        "id":                  args.id,
+                        "seed":                args.seed,
+                        "overwrite":           args.overwrite,
+                        "poisson_train":       args.poisson_train,
+                        "stage":               args.stage,
+                        "reduction":           args.reduction,
+                        "exp":                 args.exp,
+                        "less_point":          0,
+
+                        # — our new field —
+                        "remove_points_count": len(remove_points),
+                    }
+                    new_df = pd.DataFrame([record])
+                    df     = pd.concat([df, new_df], ignore_index=True)
                     df.to_csv(temp_res_dir, index=False)
+
                     torch.cuda.empty_cache()
         os.replace(temp_res_dir, res_dir)
 
@@ -229,20 +265,55 @@ def main():
             else pd.read_csv(res_dir) if os.path.exists(res_dir)
             else pd.DataFrame()
         )
-        df = pd.concat([df, pd.DataFrame({
+        # build a full DataFrame row matching the no‐remove schema + our extra field
+        new_df = pd.DataFrame({
             f"distance ({args.reduction})": dist,
-            "step": step,
-            "real batch size": len(point_to_do),
-            "p": p,
-            "point": point_to_do,
-            "sigma": train_fn.sigma,
-            "correct": corr,
-            "accuracy": accuracy,
-            "type": args.stage,
-            **vars(args)
-        })])
+            "step":                   step,
+            "real batch size":        len(point_to_do),
+            "p":                      p,
+            "point":                  point_to_do,
+            "sigma":                  train_fn.sigma,
+            "correct":                corr,
+            "accuracy":               accuracy,
+            "type":                   args.stage,
+
+            # — all original parameters —
+            "points":                 args.points,
+            "batch_size":             args.batch_size,
+            "num_iters":              args.num_iters,
+            "alpha":                  args.alpha,
+            "num_batches":            args.num_batches,
+            "lr":                     args.lr,
+            "cn":                     args.cn,
+            "dataset":                args.dataset,
+            "dec_lr":                 args.dec_lr,
+            "dp":                     args.dp,
+            "eps":                    args.eps,
+            "optimizer":              args.optimizer,
+            "model":                  args.model,
+            "norm_type":              args.norm_type,
+            "save_freq":              args.save_freq,
+            "save_name":              args.save_name,
+            "res_name":               args.res_name,
+            "gamma":                  args.gamma,
+            "id":                     args.id,
+            "seed":                   args.seed,
+            "overwrite":              args.overwrite,
+            "poisson_train":          args.poisson_train,
+            "stage":                  args.stage,
+            "reduction":              args.reduction,
+            "exp":                    args.exp,
+            "less_point":             0,
+
+            # — our new field —
+            "remove_points_count":    len(remove_points),
+        })
+
+        # append & write
+        df = pd.concat([df, new_df], ignore_index=True)
         df.to_csv(temp_res_dir, index=False)
         os.replace(temp_res_dir, res_dir)
+
 
 if __name__ == "__main__":
     main()

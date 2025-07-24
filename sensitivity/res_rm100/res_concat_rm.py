@@ -1,0 +1,19 @@
+import pandas as pd
+import os
+
+# Directory containing the CSVs
+RES_DIR = os.path.dirname(__file__)
+OUTPUT_FILE = os.path.join(RES_DIR, "res_concat_rm.csv")
+
+# Collect all filenames
+file_list = [os.path.join(RES_DIR, f"res_rm100{i}.csv") for i in range(1, 4)] # excludes 4
+
+# Read and concatenate
+df_all = pd.concat([pd.read_csv(file) for file in file_list], ignore_index=True)
+
+# Save to output
+df_all.to_csv(OUTPUT_FILE, index=False)
+
+print(f"Saved concatenated CSV to {OUTPUT_FILE}")
+
+
