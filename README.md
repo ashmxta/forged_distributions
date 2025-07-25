@@ -27,6 +27,7 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
     - compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
     - exp1: remove 100 pts of lowest impact + compare per point costs after re-training
         - does the ranking of the remaining 900 remain mostly consistent?
+            - metrics: kendall's-tau, spearman's rank corr., mean rank shift
         - do privacy costs themselves change much (magnitude)?
         - metrics to compare similarity of the models themselves?
             - grad norms (training trajectory)?
