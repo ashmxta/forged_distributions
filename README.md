@@ -1,5 +1,5 @@
-# Interpretability of privacy costs in DP-SGD
-The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310). The FairFace folder contains modified versions of these scripts - the goal increase interpretability of DPSGD, understanding what points with least and most impact look like in practice.
+# Forged training distributions in DP-SGD
+The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310).
 
 ## MNIST - Obtain per-point per step privacy guarantees:
 - We need per-step per-point gradient norms to compute privacy costs
@@ -17,18 +17,23 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
         - chmod +x run_compo.sh
         - nohup ./run_compo.sh
         - results saved to sensitivity/compo_res
+- To-do:
+    - sanity check on scale of privacy costs (plot w/ percentiles)
+    - sanity check on grad norms (plot)
+    - model accuracy (og + rm100)
 
-## MNIST - Obtain indicies of points of lowest impact:
-
-- compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
-- [in-progress] all data in SQL 
-- [in-progress] data visualization with seaborn
-
-## FairFace Dataset
-
+## MNIST - Non-recursive removal from 1K sample:
+- Obtain indicies of points of lowest impact:
+    - compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
+    - exp1: remove 100 pts of lowest impact + compare per point costs after re-training
+        - does the ranking of the remaining 900 remain mostly consistent?
+        - do privacy costs themselves change much (magnitude)?
+        - metrics to compare similarity of the models themselves?
+            - grad norms (training trajectory)?
+            - prediction behaviour?
 
  ## Plotting privacy cost curves (approximation techniques)
-- Summer 2024
+- Summer 2024 [to be added to current pipeline]
     - offset interpolation
     - neural network approximation
     - linear interpolation
