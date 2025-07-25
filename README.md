@@ -21,6 +21,12 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
 ## MNIST - Non-recursive removal from 1K sample:
 - Obtain indicies of points of lowest impact:
     - compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
+    - exp1: remove 100 pts of lowest impact + compare per point costs after re-training
+        - does the ranking of the remaining 900 remain mostly consistent?
+        - do privacy costs themselves change much (magnitude)?
+        - metrics to compare similarity of the models themselves?
+            - grad norms (training trajectory)?
+            - prediction behaviour?
 
  ## Plotting privacy cost curves (approximation techniques)
 - Summer 2024 [to be added to current pipeline]
