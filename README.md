@@ -1,4 +1,4 @@
-# Interpretability of privacy costs in DP-SGD
+# Forged training distributions in DP-SGD
 The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310).
 
 ## MNIST - Obtain per-point per step privacy guarantees:
