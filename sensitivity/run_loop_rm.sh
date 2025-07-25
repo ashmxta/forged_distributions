@@ -13,7 +13,7 @@ fi
 read -r -a removed <<< "$(< "$REMOVED_FILE")"
 echo "Loaded ${#removed[@]} points to remove."
 
-for run in {1..1}; do
+for run in {2..10}; do
   for i in {0..40}; do
     # fractional stage 0.000 … 1.000
     stage=$(echo "scale=3; $i / 40" | bc)
