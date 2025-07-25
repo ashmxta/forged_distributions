@@ -1,5 +1,5 @@
 # Interpretability of privacy costs in DP-SGD
-The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310). The FairFace folder contains modified versions of these scripts - the goal increase interpretability of DPSGD, understanding what points with least and most impact look like in practice.
+The scripts in this repo contains scripts to compute per-instance per-step privacy costs - model training and grad norm computation scripts are in the 'sensitivity' folder, the set-up is adapted from [Gradients Look Alike: Sensitivity is Often Overestimated in DP-SGD](https://arxiv.org/abs/2307.00310).
 
 ## MNIST - Obtain per-point per step privacy guarantees:
 - We need per-step per-point gradient norms to compute privacy costs
@@ -21,14 +21,9 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
 ## MNIST - Obtain indicies of points of lowest impact:
 
 - compo_res.CSV files contain privacy costs per step, to obtain the total privacy cost they must first be summed, and then they can be ranked using compo_res/rank.py.
-- [in-progress] all data in SQL 
-- [in-progress] data visualization with seaborn
-
-## FairFace Dataset
-
 
  ## Plotting privacy cost curves (approximation techniques)
-- Summer 2024
+- Summer 2024 [to be added to current pipeline]
     - offset interpolation
     - neural network approximation
     - linear interpolation
