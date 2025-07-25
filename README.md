@@ -17,6 +17,10 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
         - chmod +x run_compo.sh
         - nohup ./run_compo.sh
         - results saved to sensitivity/compo_res
+- To-do:
+    - sanity check on scale of privacy costs (plot w/ percentiles)
+    - sanity check on grad norms (plot)
+    - model accuracy (og + rm100)
 
 ## MNIST - Non-recursive removal from 1K sample:
 - Obtain indicies of points of lowest impact:
