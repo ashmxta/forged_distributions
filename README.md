@@ -21,6 +21,8 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
     - sanity check on scale of privacy costs (plot w/ percentiles)
     - sanity check on grad norms (plot)
     - model accuracy (og + rm100)
+    - is the first 1K points a reasonable sample of the entire dataset?
+        - consider performing the same analysis on a random set of 1K points (see how the privacy cost percentiles look)
 
 ## MNIST - Non-recursive removal from 1K sample:
 - Obtain indicies of points of lowest impact:
