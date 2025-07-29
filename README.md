@@ -30,6 +30,9 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
     - exp1: remove 100 pts of lowest impact + compare per point costs after re-training
         - does the ranking of the remaining 900 remain mostly consistent?
             - metrics: kendall's-tau, spearman's rank corr., mean rank shift
+                Spearman's rho: 0.9800
+                Kendall's tau: 0.9370
+                Mean rank shift (adjusted): 19.21
         - do privacy costs themselves change much (magnitude)?
         - metrics to compare similarity of the models themselves?
             - grad norms (training trajectory)?
