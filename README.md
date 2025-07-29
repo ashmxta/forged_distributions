@@ -36,7 +36,8 @@ The scripts in this repo contains scripts to compute per-instance per-step priva
             - prediction behaviour?
 
  ## Plotting privacy cost curves (approximation techniques)
-- Summer 2024 [to be added to current pipeline]
-    - offset interpolation
-    - neural network approximation
-    - linear interpolation
+- Main blocker: recursive training time
+    - Summer 2024 
+        - offset interpolation
+        - neural network approximation
+        - linear interpolation
